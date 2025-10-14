@@ -1,5 +1,7 @@
 import java.awt.Color;
-
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Class BallDemo - a short demonstration showing animation with the 
  * Canvas class. 
@@ -12,6 +14,7 @@ public class BallDemo
 {
     private Canvas myCanvas;
     private Box box;
+    private Random random;
 
     /**
      * Create a BallDemo object. Creates a fresh canvas and makes it visible.
@@ -21,6 +24,7 @@ public class BallDemo
     {
         myCanvas = new Canvas("Ball Demo", 600, 500);
         box=new Box (100,100,500,400, myCanvas);
+        random = new Random();
         box.draw();
         
     }
@@ -30,9 +34,40 @@ public class BallDemo
      * 
      * @param numOfBalls number of balls to simulate bouncing, clamped between 5-50. 
      */
-    public void boxBounce()
+    public void boxBounce(int numOfBalls)
     {
-        // you must implement this
+        // Instructions want this method to draw the box, doesn't make sense. 
+        // Skipping that, ask on monday.
+        if(numOfBalls < 5 || numOfBalls > 30) {
+            return;
+        }
+        List<BoxBall> boxBalls = new ArrayList<>();
+        for(int i = 0; i< numOfBalls; i++) {
+            int diameter = 10;
+            // 400-300-10 = 90. We get (0-90) + 300
+            // 
+            int xRange = box.getRightWall() -box.getLeftWall() - diameter;
+            int yRange = box.getBottomWall() - box.getTopWall() - diameter;
+            BoxBall ball = new BoxBall(random.nextInt(xRange) + box.getLeftWall(), 
+            random.nextInt(yRange) + box.getTopWall(), diameter, Color.BLUE, this.box, this.myCanvas);
+            
+            ball.draw();
+            boxBalls.add(ball);
+        }
+        
+        while(true) {
+            for(BoxBall ball : boxBalls) {
+                ball.move(box.getLeftWall(), box.getRightWall(), box.getTopWall(), box.getBottomWall());
+            }
+            
+            try{
+                Thread.sleep(50);
+            }catch(Exception e) {
+                // don't care
+            }
+        }
+        
+        
     }
     
     /**

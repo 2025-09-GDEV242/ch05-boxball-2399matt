@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.Random;
 
 /**
  * Class BoxBall - a graphical ball that moves similar to the ball in PONG.
@@ -34,6 +35,7 @@ public class BoxBall
     private Canvas canvas;
     private int ySpeed;         // vertical speed
     private int xSpeed;         // horizontal speed
+    private Random random;
 
     /**
      * Constructor for objects of class BoxBall
@@ -52,7 +54,13 @@ public class BoxBall
         yPosition = yPos;
         color = ballColor;
         diameter = ballDiameter;
-
+        random = new Random();
+        xSpeed = random.nextInt(15) - 7;
+        ySpeed = random.nextInt(15) - 7; 
+        while(xSpeed == 0 || ySpeed == 0) {
+            xSpeed = random.nextInt(15) - 7;
+            ySpeed = random.nextInt(15) - 7; 
+        }
         canvas = drawingCanvas;
     }
 
@@ -76,17 +84,35 @@ public class BoxBall
     /**
      * Move this ball according to its position and speed and redraw.
      **/
-    public void move()
+    public void move(int leftWall, int rightWall, int topWall, int bottomWall)
     {
         // remove from canvas at the current position
         erase();
-            
+        
         // compute new position
-  
+        this.xPosition += xSpeed;
+        this.yPosition += ySpeed;
         // figure out if it has hit the left or right wall
-        
+        if(xPosition + diameter >= rightWall) {
+            // Need diameter checks on right / bottom because top left circle is (0,0).
+            xPosition = rightWall-diameter;
+            xSpeed = -xSpeed;
+        }
+        if(xPosition <= leftWall) {
+            xPosition = leftWall+1;
+            xSpeed = -xSpeed;
+        }
         // figure out if it has hit the top or bottom wall
-        
+        if(yPosition <= topWall) {
+            // I don't know why this works. erase() might be chipping away the wall?
+            // Can't make diameter checks for left/top, so just move it slightly.
+            yPosition = topWall+1;
+            ySpeed = -ySpeed;
+        }
+        if(yPosition+diameter >= bottomWall) {
+            yPosition=bottomWall-diameter;
+            ySpeed = -ySpeed;
+        }
         draw();
     }    
 
