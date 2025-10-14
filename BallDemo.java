@@ -45,11 +45,11 @@ public class BallDemo
         for(int i = 0; i< numOfBalls; i++) {
             int diameter = 10;
             // 400-300-10 = 90. We get (0-90) + 300
-            // 
+            // Check on this another time, so far so good.
             int xRange = box.getRightWall() -box.getLeftWall() - diameter;
             int yRange = box.getBottomWall() - box.getTopWall() - diameter;
             BoxBall ball = new BoxBall(random.nextInt(xRange) + box.getLeftWall(), 
-            random.nextInt(yRange) + box.getTopWall(), diameter, Color.BLUE, this.box, this.myCanvas);
+            random.nextInt(yRange) + box.getTopWall(), diameter, generateColor(), this.box, this.myCanvas);
             
             ball.draw();
             boxBalls.add(ball);
@@ -57,11 +57,11 @@ public class BallDemo
         
         while(true) {
             for(BoxBall ball : boxBalls) {
-                ball.move(box.getLeftWall(), box.getRightWall(), box.getTopWall(), box.getBottomWall());
+                ball.move(box.getLeftWall(), box.getRightWall(), box.getTopWall(), box.getBottomWall(), boxBalls);
             }
             
             try{
-                Thread.sleep(50);
+                Thread.sleep(20);
             }catch(Exception e) {
                 // don't care
             }
@@ -100,5 +100,19 @@ public class BallDemo
                 finished = true;
             }
         }
+    }
+    
+    /**
+     * Generate a color, but avoid white / too-light colors. 
+     */
+    public Color generateColor() {
+        int R, G, B;
+        do{
+            R = random.nextInt(256);
+            G = random.nextInt(256);
+            B = random.nextInt(256);    
+        }while((R+G+B) / 3 > 128);
+        // Super weak check, but seems to work decent enough to not get white/very light colors.
+        return new Color(R,G,B);
     }
 }
