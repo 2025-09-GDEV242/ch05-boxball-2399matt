@@ -85,7 +85,7 @@ public class BoxBall
     /**
      * Move this ball according to its position and speed and redraw.
      **/
-    public void move(int leftWall, int rightWall, int topWall, int bottomWall, List<BoxBall> otherBalls)
+    public void move(int leftWall, int rightWall, int topWall, int bottomWall)
     {
         // remove from canvas at the current position
         erase();
@@ -93,17 +93,6 @@ public class BoxBall
         // compute new position
         this.xPosition += xSpeed;
         this.yPosition += ySpeed;
-        for(BoxBall ball : otherBalls) {
-            if(ball != this) {
-                if(Math.abs(ball.getXPosition() - this.xPosition) < 15) {
-                    if(Math.abs(ball.getYPosition() - this.yPosition) < 15) {
-                        // TODO, if we can figure out the path of motion
-                        // we can set it correctly.
-                        ySpeed = -ySpeed;
-                    }
-                }
-            }
-        }
         // figure out if it has hit the left or right wall
         if(xPosition + diameter >= rightWall) {
             // Need diameter checks on right / bottom because top left circle is (0,0).

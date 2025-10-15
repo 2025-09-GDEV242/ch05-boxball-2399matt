@@ -57,7 +57,7 @@ public class BallDemo
         
         while(true) {
             for(BoxBall ball : boxBalls) {
-                ball.move(box.getLeftWall(), box.getRightWall(), box.getTopWall(), box.getBottomWall(), boxBalls);
+                ball.move(box.getLeftWall(), box.getRightWall(), box.getTopWall(), box.getBottomWall());
             }
             
             try{
