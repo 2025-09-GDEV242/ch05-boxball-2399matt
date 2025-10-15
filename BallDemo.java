@@ -7,7 +7,8 @@ import java.util.List;
  * Canvas class. 
  *
  * @author Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author Matt Witham
+ * @version 2025.10.14
  */
 
 public class BallDemo   
@@ -30,7 +31,7 @@ public class BallDemo
     }
 
     /**
-     * boxBounce - simulate 5-50 balls bouncing within a box
+     * boxBounce - simulate 5-30 balls bouncing within a box.
      * 
      * @param numOfBalls number of balls to simulate bouncing, clamped between 5-50. 
      */
@@ -43,7 +44,7 @@ public class BallDemo
         }
         List<BoxBall> boxBalls = new ArrayList<>();
         for(int i = 0; i< numOfBalls; i++) {
-            int diameter = 10;
+            int diameter = 14;
             // 400-300-10 = 90. We get (0-90) + 300
             // Check on this another time, so far so good.
             int xRange = box.getRightWall() -box.getLeftWall() - diameter;
@@ -103,9 +104,9 @@ public class BallDemo
     }
     
     /**
-     * Generate a color, but avoid white / too-light colors. 
+     * Generates a non-white (or too light) color.
      */
-    public Color generateColor() {
+    private Color generateColor() {
         int R, G, B;
         do{
             R = random.nextInt(256);

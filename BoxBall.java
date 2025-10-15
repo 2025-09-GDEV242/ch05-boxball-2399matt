@@ -20,10 +20,10 @@ import java.util.List;
  * @author David J. Barnes
  * @author Bruce Quig
  * @author William Crosbie
+ * @author
  *
- * @version 2025.10.06
+ * @version 2025.10.14
  */
-
 public class BoxBall
 {
     private Box myBox;
@@ -56,6 +56,7 @@ public class BoxBall
         color = ballColor;
         diameter = ballDiameter;
         random = new Random();
+        // +-7 generation, could make each a condition but it doesn't matter.
         xSpeed = random.nextInt(15) - 7;
         ySpeed = random.nextInt(15) - 7; 
         while(xSpeed == 0 || ySpeed == 0) {
@@ -99,7 +100,12 @@ public class BoxBall
                     if(Math.abs(ball.getYPosition() - this.yPosition) < 15) {
                         // TODO, if we can figure out the path of motion
                         // we can set it correctly.
-                        ySpeed = -ySpeed;
+                        int currY = ySpeed;
+                        int currX = xSpeed;
+                        this.ySpeed = ball.getYSpeed();
+                        this.xSpeed = ball.getXSpeed();
+                        ball.setXSpeed(currX);
+                        ball.setYSpeed(-currY);
                     }
                 }
             }
@@ -142,5 +148,33 @@ public class BoxBall
     public int getYPosition()
     {
         return yPosition;
+    }
+    
+    /**
+     * Return the speed value for y-direction
+     */
+    public int getYSpeed() {
+        return ySpeed;
+    }
+    
+    /**
+     * return the speed value for x-direction
+     */
+    public int getXSpeed() {
+        return xSpeed;
+    }
+    
+    /**
+     * set the speed value for y-direction
+     */
+    public void setYSpeed(int ySpeed) {
+        this.ySpeed = ySpeed;
+    }
+    
+    /**
+     * set the speed value for x-direction
+     */
+    public void setXSpeed(int xSpeed) {
+        this.xSpeed = xSpeed;
     }
 }
